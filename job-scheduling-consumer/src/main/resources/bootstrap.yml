@@ -1,0 +1,13 @@
+# 服务端口
+server:
+  port: 8080
+spring:
+  application:
+    name: job-scheduling-consumer
+eureka:
+  client:
+    service-url:
+      defaultZone:
+        http://localhost:9000/eureka,http://localhost:9001/eureka
+  instance:
+    prefer-ip-address: true
