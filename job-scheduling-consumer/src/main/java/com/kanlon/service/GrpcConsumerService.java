@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class GrpcConsumerService {
+
     private Logger logger = LoggerFactory.getLogger(GrpcConsumerService.class);
 
     @Autowired

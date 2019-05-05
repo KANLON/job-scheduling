@@ -6,7 +6,9 @@
 项目目录简介：
 
 1. `built-resource` 是一些初始化资源，目前只包含数据库脚本，要使用该项目，先执行该目录下的sql文件
-2. `src`是源代码目录
+2. `job-scheduling-consumer` 是grpc消费方，调用远程rpc方法。也是管理调度任务的主项目
+3. `job-scheduling-provider` 是grpc的提供方，提供方法，不涉及调度任务，由消费方定时调度。
+4. `spring-boot-grpc-eureka` 服务注册中心，提供服务注册，方便grpc通过应用名即可调用远程rpc方法。
 
 #### 2019-05-4
 0. 将项目从练习中独立出来，形成单独的项目

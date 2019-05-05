@@ -51,6 +51,10 @@ public class AppQuartz {
      */
     private String invokeParam2;
     /**
+     * grpc服务提供方
+     */
+    private String providerName;
+    /**
      * 描述
      */
     private String description;
@@ -127,6 +131,14 @@ public class AppQuartz {
 
     public void setInvokeParam(String invokeParam) {
         this.invokeParam = invokeParam;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public String getDescription() {
