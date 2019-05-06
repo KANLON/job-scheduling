@@ -2,9 +2,7 @@ package com.kanlon.service;
 
 import com.kanlon.common.Constant;
 import com.kanlon.exception.QuartzException;
-import com.kanlon.job.EmailJob;
-import com.kanlon.job.HttpJob;
-import com.kanlon.job.ShellJob;
+import com.kanlon.job.RpcJob;
 import com.kanlon.model.AppQuartz;
 import com.kanlon.model.CommonResponse;
 import com.kanlon.model.ScheduleJob;
@@ -15,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,12 +24,12 @@ import java.util.Set;
  * @since 2019-04-10
  **/
 @Service
-public class JobUtil {
+public class JobService {
 
     @Autowired
     private Scheduler scheduler;
 
-    private Logger logger = LoggerFactory.getLogger(JobUtil.class);
+    private Logger logger = LoggerFactory.getLogger(JobService.class);
 
     /**
      * 新建一个任务,因为这里暂时不要很复杂的调度，所以现在的情况是，jobDetail和Trigger是绑定的，一个JobDetail对应一个Trigger
@@ -41,20 +38,8 @@ public class JobUtil {
         if (!CronExpression.isValidExpression(appQuartz.getCronExpression())) {
             throw new QuartzException("非法的cron 表达式");
         }
-        JobDetail jobDetail = null;
-        //构建job信息
-        if (Constant.HTTP_STR.equals(appQuartz.getJobGroup())) {
-            jobDetail = JobBuilder.newJob(HttpJob.class).withIdentity(appQuartz.getJobName(),
-                    appQuartz.getJobGroup()).build();
-        }
-        if (Constant.SHELL_STR.equals(appQuartz.getJobGroup())) {
-            jobDetail = JobBuilder.newJob(ShellJob.class).withIdentity(appQuartz.getJobName(),
-                    appQuartz.getJobGroup()).withDescription(appQuartz.getDescription()).build();
-        }
-        if (Constant.EMAIL_STR.equals(appQuartz.getJobGroup())) {
-            jobDetail = JobBuilder.newJob(EmailJob.class).withIdentity(appQuartz.getJobName(),
-                    appQuartz.getJobGroup()).withDescription(appQuartz.getDescription()).build();
-        }
+        JobDetail jobDetail = JobBuilder.newJob(RpcJob.class).withIdentity(appQuartz.getJobName(),
+                appQuartz.getJobGroup()).build();
         //表达式调度构建器(即任务执行的时间,不立即执行)
         CronScheduleBuilder scheduleBuilder =
                 CronScheduleBuilder.cronSchedule(appQuartz.getCronExpression()).withMisfireHandlingInstructionDoNothing();
@@ -64,6 +49,7 @@ public class JobUtil {
         //传递参数
         trigger.getJobDataMap().put(Constant.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
         trigger.getJobDataMap().put(Constant.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
+        trigger.getJobDataMap().put(Constant.PROVIDER_NAME_STR, appQuartz.getProviderName());
         trigger.getJobDataMap().put(Constant.QUARTZ_ID_STR, appQuartz.getQuartzId());
         //将触发器与任务绑定在一起
         scheduler.scheduleJob(jobDetail, trigger);
@@ -75,7 +61,7 @@ public class JobUtil {
      *
      * @param appQuartz 任务信息
      **/
-    public void modifyJob(AppQuartz appQuartz) throws SchedulerException, ParseException {
+    public void modifyJob(AppQuartz appQuartz) throws SchedulerException {
         if (!CronExpression.isValidExpression(appQuartz.getCronExpression())) {
             throw new QuartzException("Illegal cron expression,corn表达式不正确");
         }
@@ -93,9 +79,10 @@ public class JobUtil {
         trigger =
                 trigger.getTriggerBuilder().startAt(appQuartz.getStartTime()).withIdentity(triggerKey).withDescription(appQuartz.getDescription()).withSchedule(scheduleBuilder).build();
         //修改参数
-        trigger.getJobDataMap().put(Constant.QUARTZ_ID_STR, appQuartz.getQuartzId());
         trigger.getJobDataMap().put(Constant.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
         trigger.getJobDataMap().put(Constant.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
+        trigger.getJobDataMap().put(Constant.PROVIDER_NAME_STR, appQuartz.getProviderName());
+        trigger.getJobDataMap().put(Constant.QUARTZ_ID_STR, appQuartz.getQuartzId());
         //按新的trigger重新设置job执行
         scheduler.rescheduleJob(triggerKey, trigger);
         logger.info("修改内置quartz信息成功");

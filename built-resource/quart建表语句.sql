@@ -18,22 +18,22 @@ DROP TABLE IF EXISTS qrtz_calendars;
 
 /*创建自定义的任务表*/
 DROP TABLE IF EXISTS tb_app_quartz;
-CREATE TABLE tb_app_quartz
-(
-  quartz_id INT(11) PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-  job_name VARCHAR(100) NOT NULL COMMENT '任务名称',
-  job_group VARCHAR(100) NOT NULL DEFAULT 'default' COMMENT '任务分组',
-  start_time DATETIME NOT NULL COMMENT '任务开始时间',
-  cron_expression VARCHAR(20) NOT NULL COMMENT 'corn表格式',
-  invoke_param VARCHAR(255) NOT NULL COMMENT '需要传递的参数',
-  invoke_param2 VARCHAR(255) COMMENT '需要传递的参数2',
-  charge VARCHAR(255) NOT NULL COMMENT '负责人姓名',
-  charge_department VARCHAR(255) NOT NULL COMMENT '负责人部门',
-  -- 由于不能同时创建两个default timestamp默认值所以将创建时间的默认值修改为'1991-01-01 00:00:00'
-  ctime TIMESTAMP NOT NULL DEFAULT '1991-01-01 00:00:00' COMMENT '创建时间',
-  mtime TIMESTAMP NOT NULL DEFAULT NOW() COMMENT '修改时间',
-  dr TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否有效,标记删除'
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='自定义的任务表';
+CREATE TABLE `tb_app_quartz` (
+  `quartz_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `job_name` varchar(100) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(100) NOT NULL DEFAULT 'default' COMMENT '任务分组',
+  `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '任务开始时间',
+  `cron_expression` varchar(20) NOT NULL COMMENT 'corn表格式',
+  `invoke_param` varchar(255) NOT NULL COMMENT '需要传递的参数',
+  `invoke_param2` varchar(255) DEFAULT NULL COMMENT '需要传递的参数2',
+  `charge` varchar(255) NOT NULL COMMENT '负责人姓名',
+  `charge_department` varchar(255) NOT NULL COMMENT '负责人部门',
+  `ctime` timestamp NOT NULL DEFAULT '1991-01-01 00:00:00' COMMENT '创建时间',
+  `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dr` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否有效,标记删除',
+  PRIMARY KEY (`quartz_id`),
+  UNIQUE KEY `job_name` (`job_name`,`job_group`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='自定义的任务表';
 
 /**创建任务执行日志结果表*/
 DROP TABLE IF EXISTS tb_quartz_result;

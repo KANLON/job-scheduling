@@ -1,6 +1,11 @@
 package com.kanlon.job;
 
 import com.kanlon.common.Constant;
+import com.kanlon.job.once.EmailOnceJob;
+import com.kanlon.job.once.HttpOnceJob;
+import com.kanlon.job.once.ShellOnceJob;
+import com.kanlon.model.CommonResponse;
+import com.kanlon.model.ConsumerRequest;
 import com.kanlon.model.QuartzResultModel;
 import com.kanlon.service.GrpcConsumerService;
 import org.quartz.JobDataMap;
@@ -20,13 +25,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class RpcJob extends QuartzJobBean {
 
-    Logger logger = LoggerFactory.getLogger(EmailJob.class);
+    Logger logger = LoggerFactory.getLogger(QuartzJobBean.class);
+
 
     @Autowired
     private GrpcConsumerService grpcConsumerService;
-
     @Autowired
     private CommonJobService commonJobService;
+    @Autowired
+    private ShellOnceJob shellOnceJob;
+    @Autowired
+    private HttpOnceJob httpOnceJob;
+    @Autowired
+    private EmailOnceJob emailOnceJob;
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
@@ -37,15 +48,46 @@ public class RpcJob extends QuartzJobBean {
         StringBuffer resultLog = new StringBuffer();
         try {
             logger.info("执行的任务名为：" + context.getTrigger().getKey());
+            // 包含传递参数信息的map
             JobDataMap data = context.getTrigger().getJobDataMap();
             model.setQuartzId((Long) data.get(Constant.QUARTZ_ID_STR));
-            //第一个参数的为要发送到目的邮箱
-            String to = (String) data.get(Constant.INVOKE_PARAM_STR);
-            String[] invokeParam2 = ((String) data.get(Constant.INVOKE_PARAM2_STR)).split("#");
-            model.setExecResult(1);
+            String param1 = (String) data.get(Constant.INVOKE_PARAM_STR);
+            String param2 = (String) data.get(Constant.INVOKE_PARAM2_STR);
+            String providerName = (String) data.get(Constant.PROVIDER_NAME_STR);
+            // 调度的类型，http，shell，还是email，由组名决定
+            String type = context.getJobDetail().getKey().getGroup();
+            CommonResponse commonResponse;
+            // 如果是localhost执行本地的调度方法
+            if (Constant.LOCALHOST_STR.equals(providerName)) {
+                if (Constant.SHELL_STR.equals(type)) {
+                    commonResponse = shellOnceJob.executeInternal(param1);
+                } else if (Constant.HTTP_STR.equals(type)) {
+                    commonResponse = httpOnceJob.executeInternal(param1);
+                } else if (Constant.EMAIL_STR.equals(type)) {
+                    commonResponse = emailOnceJob.executeInternal(param1, param2);
+                } else {
+                    commonResponse = CommonResponse.failedResult("执行任务的类型错误");
+                }
+            } else {
+                ConsumerRequest request = new ConsumerRequest();
+                request.setType(type);
+                request.setParam1(param1);
+                request.setParam2(param2);
+                request.setProviderName(providerName);
+                //执行远程rpc方法
+                commonResponse = grpcConsumerService.callMethod(request);
+            }
+
+            //如果返回正确时，才设置正确的结果
+            if (commonResponse.getCode() == 1) {
+                model.setExecResult(1);
+            } else {
+                //如果失败，则添加结果信息
+                resultLog.append(commonResponse.getMessage());
+            }
         } catch (Exception e) {
-            logger.error("定时发送邮件错误！", e);
-            resultLog.append(e.getLocalizedMessage());
+            logger.error("调度任务错误！", e);
+            resultLog.append("调度任务错误！" + e.getLocalizedMessage());
         } finally {
             commonJobService.addResult(oldTime, resultLog.toString(), model, logger);
         }

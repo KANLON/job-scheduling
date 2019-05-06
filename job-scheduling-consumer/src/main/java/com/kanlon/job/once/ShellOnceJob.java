@@ -35,7 +35,7 @@ public class ShellOnceJob {
         Integer[] tempInteger = new Integer[1];
         //执行结果记录
         StringBuffer resultLog = new StringBuffer();
-        Integer exitValue = null;
+        Integer exitValue;
         try {
             runShell(param1, resultLog, latch, tempInteger);
             //如果过了3个小时后，还没执行完，则直接返回
@@ -64,7 +64,7 @@ public class ShellOnceJob {
      * @return 运行结果
      **/
     @Async
-    public Integer[] runShell(String shStr, StringBuffer result, CountDownLatch latch, Integer[] results) throws Exception {
+    protected Integer[] runShell(String shStr, StringBuffer result, CountDownLatch latch, Integer[] results) throws Exception {
         String os = System.getProperty("os.name").toLowerCase();
         Process process;
         if (os.startsWith(Constant.OS_NAME)) {

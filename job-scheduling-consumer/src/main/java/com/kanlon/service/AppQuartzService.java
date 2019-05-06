@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class AppQuartzService {
     @Autowired
-    private JobUtil jobUtil;
+    private JobService jobService;
 
     @Autowired
     private QuartzCronMapper cronMapper;
@@ -55,7 +55,7 @@ public class AppQuartzService {
             throw new QuartzException("该任务名称已经存在了，请选择另外一个名称进行创建任务");
         }
         cronMapper.insertOne(appQuartz);
-        jobUtil.addJob(appQuartz);
+        jobService.addJob(appQuartz);
         logger.info("添加自己的quartz信息成功");
     }
 
@@ -81,7 +81,7 @@ public class AppQuartzService {
     @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = {Exception.class})
     public void deleteAppQuartzByIdSer(Long quartzId) throws SchedulerException {
         AppQuartz appQuartz = this.selectAppQuartzByIdSer(quartzId);
-        jobUtil.deleteJob(appQuartz.getJobName(), appQuartz.getJobGroup());
+        jobService.deleteJob(appQuartz.getJobName(), appQuartz.getJobGroup());
         cronMapper.deleteAppQuartzByIdSer(quartzId);
     }
 
@@ -119,7 +119,7 @@ public class AppQuartzService {
             oldAppQuartz.setDescription(newAppQuartz.getDescription());
         }
         oldAppQuartz.setMtime(new Date());
-        jobUtil.modifyJob(oldAppQuartz);
+        jobService.modifyJob(oldAppQuartz);
         cronMapper.updateAppQuartzSer(oldAppQuartz);
         logger.info("修改自己建立的辅助quartz信息成功");
     }

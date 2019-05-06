@@ -9,9 +9,6 @@ logging:
         mapper: INFO
 
 spring:
-  # 设置quartz使用数据库存储
-  quartz:
-    job-store-type: jdbc
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_quartz?useUnicode=true&characterEncoding=utf-8&useSSL=false

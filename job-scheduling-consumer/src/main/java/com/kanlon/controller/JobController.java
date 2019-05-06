@@ -5,7 +5,7 @@ import com.kanlon.model.CommonResponse;
 import com.kanlon.model.PageDatasModel;
 import com.kanlon.model.PageModel;
 import com.kanlon.service.AppQuartzService;
-import com.kanlon.service.JobUtil;
+import com.kanlon.service.JobService;
 import com.kanlon.service.QuartzResultService;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ import java.util.Date;
 public class JobController {
 
     @Autowired
-    private JobUtil jobUtil;
+    private JobService jobService;
 
     @Autowired
     private AppQuartzService appQuartzService;
@@ -116,7 +116,7 @@ public class JobController {
     public CommonResponse pauseJob(@Valid @NotEmpty @RequestBody final Long[] quartzIds) throws Exception {
         for (final Long quartzId : quartzIds) {
             final AppQuartz appQuartz = appQuartzService.selectAppQuartzByIdSer(quartzId);
-            jobUtil.pauseJob(appQuartz.getJobName(), appQuartz.getJobGroup());
+            jobService.pauseJob(appQuartz.getJobName(), appQuartz.getJobGroup());
         }
         return CommonResponse.succeedResult();
     }
@@ -131,7 +131,7 @@ public class JobController {
     public CommonResponse resumeJob(@Valid @NotEmpty @RequestBody final Long[] quartzIds) throws Exception {
         for (final Long quartzId : quartzIds) {
             final AppQuartz appQuartz = appQuartzService.selectAppQuartzByIdSer(quartzId);
-            jobUtil.resumeJob(appQuartz.getJobName(), appQuartz.getJobGroup());
+            jobService.resumeJob(appQuartz.getJobName(), appQuartz.getJobGroup());
         }
         return CommonResponse.succeedResult();
     }
@@ -143,7 +143,7 @@ public class JobController {
      **/
     @GetMapping(value = "/pauseAll")
     public CommonResponse pauseAllJob() throws Exception {
-        jobUtil.pauseAllJob();
+        jobService.pauseAllJob();
         return CommonResponse.succeedResult();
     }
 
@@ -154,7 +154,7 @@ public class JobController {
      **/
     @RequestMapping(value = "/resumeAll", method = RequestMethod.GET)
     public CommonResponse resumeAllJob() throws Exception {
-        jobUtil.resumeAllJob();
+        jobService.resumeAllJob();
         return CommonResponse.succeedResult();
     }
 
@@ -166,7 +166,7 @@ public class JobController {
      **/
     @GetMapping("/tasks")
     public CommonResponse getAllTask() throws SchedulerException {
-        return jobUtil.getAllTask();
+        return jobService.getAllTask();
     }
 
 

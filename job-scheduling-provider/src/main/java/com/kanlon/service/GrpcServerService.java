@@ -9,9 +9,7 @@ import com.kanlon.model.CommonResponse;
 import com.kanlon.proto.GreeterGrpc;
 import com.kanlon.proto.GreeterOuterClass;
 import io.grpc.stub.StreamObserver;
-import net.devh.springboot.autoconfigure.grpc.server.GrpcService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -20,10 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author zhangcanlong
  * @since 2019/4/25 9:12
  **/
-@GrpcService(GreeterOuterClass.class)
+@GrpcService
 public class GrpcServerService extends GreeterGrpc.GreeterImplBase {
 
-    private Logger logger = LoggerFactory.getLogger(GrpcServerService.class);
     @Autowired
     private EmailOnceJob emailOnceJob;
     @Autowired
@@ -40,8 +37,8 @@ public class GrpcServerService extends GreeterGrpc.GreeterImplBase {
     @Override
     public void callMethod(GreeterOuterClass.ParamRequest request,
             StreamObserver<GreeterOuterClass.CommonResponseReply> responseObserver) {
-        String param1 = "参数1, " + request.getParam1();
-        String param2 = "参数2, " + request.getParam2();
+        String param1 = request.getParam1();
+        String param2 = request.getParam2();
         String type = request.getType();
         //设置返回数据
         GreeterOuterClass.CommonResponseReply.Builder builder = GreeterOuterClass.CommonResponseReply.newBuilder();
@@ -58,11 +55,12 @@ public class GrpcServerService extends GreeterGrpc.GreeterImplBase {
         }
         builder.setCode(commonResponse.getCode());
         builder.setMessage(commonResponse.getMessage());
-        builder.addData(commonResponse.getResultData().toString());
+        if (commonResponse.getResultData() != null) {
+            builder.addData(commonResponse.getResultData().toString());
+        }
         GreeterOuterClass.CommonResponseReply responseReply = builder.build();
         responseObserver.onNext(responseReply);
         responseObserver.onCompleted();
-        logger.info("Returning " + param1 + "\n" + param2);
         super.callMethod(request, responseObserver);
     }
 
