@@ -54,7 +54,7 @@ public class ShellOnceJob {
             resultLog.append("command exit value(" + exitValue + ") is failed");
             return CommonResponse.failedResult(resultLog.toString(), exitValue);
         }
-        return CommonResponse.succeedResult();
+        return CommonResponse.succeedResult(resultLog);
     }
 
     /**

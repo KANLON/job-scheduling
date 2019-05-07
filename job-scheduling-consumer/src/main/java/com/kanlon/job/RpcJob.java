@@ -77,10 +77,11 @@ public class RpcJob extends QuartzJobBean {
                 //执行远程rpc方法
                 commonResponse = grpcConsumerService.callMethod(request);
             }
-
             //如果返回正确时，才设置正确的结果
             if (commonResponse.getCode() == 1) {
                 model.setExecResult(1);
+                // 将返回的信息数据加入到结果中
+                resultLog.append(commonResponse.getResultData());
             } else {
                 //如果失败，则添加结果信息
                 resultLog.append(commonResponse.getMessage());

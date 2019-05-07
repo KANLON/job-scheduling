@@ -48,7 +48,14 @@ mybatis:
 mail:
   fromMail:
     addr: s19961234@126.com
-
+# grpc配置
+grpc:
+  client:
+    # 目前这个是固定的，后期需要加到配置类中，通过前端传入配置
+    job-scheduling-provider:
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
 
 
 

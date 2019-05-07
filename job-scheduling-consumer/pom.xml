@@ -65,18 +65,20 @@
             <groupId>net.devh</groupId>
             <artifactId>grpc-client-spring-boot-starter</artifactId>
             <version>${net-devh-grpc.version}</version>
-            <exclusions>
+<!--            <exclusions>
                 <exclusion>
                     <groupId>io.grpc</groupId>
                     <artifactId>grpc-netty-shaded</artifactId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.grpc/grpc-netty-shaded -->
         <dependency>
             <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty</artifactId>
+            <artifactId>grpc-netty-shaded</artifactId>
             <version>${grpc.version}</version>
         </dependency>
+
         <!-- 邮件服务 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

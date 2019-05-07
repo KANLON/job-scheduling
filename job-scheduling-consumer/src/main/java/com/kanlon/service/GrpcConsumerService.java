@@ -33,7 +33,7 @@ public class GrpcConsumerService {
         GreeterGrpc.GreeterBlockingStub stub = GreeterGrpc.newBlockingStub(channel);
         //构造远程调用的请求参数类
         GreeterOuterClass.ParamRequest paramRequest =
-                GreeterOuterClass.ParamRequest.newBuilder().setParam1(request.getParam1()).setParam2(request.getParam2()).build();
+                GreeterOuterClass.ParamRequest.newBuilder().setParam1(request.getParam1()).setParam2(request.getParam2()).setType(request.getType()).build();
         // 远程请求
         GreeterOuterClass.CommonResponseReply response = stub.callMethod(paramRequest);
         // 如果执行正确的，返回正确的信息

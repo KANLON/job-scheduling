@@ -1,5 +1,6 @@
 package com.kanlon.controller;
 
+import com.kanlon.common.Constant;
 import com.kanlon.model.AppQuartz;
 import com.kanlon.model.CommonResponse;
 import com.kanlon.model.PageDatasModel;
@@ -64,11 +65,14 @@ public class JobController {
         final Date date = new Date();
         appQuartz.setCtime(date);
         appQuartz.setMtime(date);
-        final String flag = "#";
-        //如果包含参数2，判断是否包含#，如果不包含该分割符，表示错误
-        if (appQuartz.getInvokeParam2() != null) {
-            if (!appQuartz.getInvokeParam2().contains(flag)) {
-                return CommonResponse.failedResult("传递的参数2错误，应该包含#符号，第一个#符号之前的为邮件标题");
+        if (Constant.EMAIL_STR.equals(appQuartz.getJobGroup())) {
+            final String flag = "#";
+            if (appQuartz.getInvokeParam2() != null) {
+                if (!appQuartz.getInvokeParam2().contains(flag)) {
+                    return CommonResponse.failedResult("传递的参数2错误，应该包含#符号，第一个#符号之前的为邮件标题");
+                }
+            }else{
+                return CommonResponse.failedResult("参数二不能为null，并且应该包含#符号，第一个#符号之前的为邮件标题");
             }
         }
         appQuartzService.insertAppQuartzSer(appQuartz);
