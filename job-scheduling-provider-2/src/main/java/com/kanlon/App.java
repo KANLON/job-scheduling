@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  **/
 @MapperScan("com.kanlon.mapper")
 @SpringBootApplication
+@EnableAsync
 @EnableEurekaClient
 @EnableDiscoveryClient
 public class App {

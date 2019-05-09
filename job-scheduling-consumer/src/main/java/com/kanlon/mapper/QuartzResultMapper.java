@@ -61,7 +61,6 @@ public interface QuartzResultMapper {
 
 
 
-
     /**
      * 根据其任务id和时间条件，获取其全部执行日志结果数量
      * @param quartzId 任务id

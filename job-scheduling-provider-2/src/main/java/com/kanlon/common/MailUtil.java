@@ -59,6 +59,7 @@ public class MailUtil {
      */
     public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
+        // true表示需要创建一个multipart message
         MimeMessageHelper helper =this.setToAndFromAndSubject(to,subject,content,message);
         mailSender.send(message);
         logger.info("html邮件发送成功");

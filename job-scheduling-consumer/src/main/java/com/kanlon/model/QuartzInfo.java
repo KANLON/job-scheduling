@@ -50,6 +50,8 @@ public class QuartzInfo {
      * 需要传递的参数2
      */
     private String invokeParam2;
+    /**提供服务的应用名，本机的为localhost*/
+    private String providerName;
     /**
      * 修改时间
      */
@@ -92,6 +94,22 @@ public class QuartzInfo {
         this.jobGroup = jobGroup;
     }
 
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
+    public String getChargeDepartment() {
+        return chargeDepartment;
+    }
+
+    public void setChargeDepartment(String chargeDepartment) {
+        this.chargeDepartment = chargeDepartment;
+    }
+
     public Date getStartTime() {
         return startTime;
     }
@@ -114,6 +132,22 @@ public class QuartzInfo {
 
     public void setInvokeParam(String invokeParam) {
         this.invokeParam = invokeParam;
+    }
+
+    public String getInvokeParam2() {
+        return invokeParam2;
+    }
+
+    public void setInvokeParam2(String invokeParam2) {
+        this.invokeParam2 = invokeParam2;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public Date getMtime() {
@@ -149,32 +183,8 @@ public class QuartzInfo {
         this.triggerState = triggerState;
     }
 
-    public String getCharge() {
-        return charge;
-    }
-
-    public void setCharge(String charge) {
-        this.charge = charge;
-    }
-
-    public String getChargeDepartment() {
-        return chargeDepartment;
-    }
-
-    public void setChargeDepartment(String chargeDepartment) {
-        this.chargeDepartment = chargeDepartment;
-    }
-
-    public String getInvokeParam2() {
-        return invokeParam2;
-    }
-
-    public void setInvokeParam2(String invokeParam2) {
-        this.invokeParam2 = invokeParam2;
-    }
-
     @Override
     public String toString() {
-        return "QuartzInfo{" + "quartzId=" + quartzId + ", jobName='" + jobName + '\'' + ", jobGroup='" + jobGroup + '\'' + ", charge='" + charge + '\'' + ", chargeDepartment='" + chargeDepartment + '\'' + ", startTime='" + startTime + '\'' + ", cronExpression='" + cronExpression + '\'' + ", invokeParam='" + invokeParam + '\'' + ", invokeParam2='" + invokeParam2 + '\'' + ", mtime='" + mtime + '\'' + ", description='" + description + '\'' + ", nextFireTime='" + nextFireTime + '\'' + ", triggerState='" + triggerState + '\'' + '}';
+        return "QuartzInfo{" + "quartzId=" + quartzId + ", jobName='" + jobName + '\'' + ", jobGroup='" + jobGroup + '\'' + ", charge='" + charge + '\'' + ", chargeDepartment='" + chargeDepartment + '\'' + ", startTime=" + startTime + ", cronExpression='" + cronExpression + '\'' + ", invokeParam='" + invokeParam + '\'' + ", invokeParam2='" + invokeParam2 + '\'' + ", providerName='" + providerName + '\'' + ", mtime=" + mtime + ", description='" + description + '\'' + ", nextFireTime=" + nextFireTime + ", triggerState='" + triggerState + '\'' + '}';
     }
 }
