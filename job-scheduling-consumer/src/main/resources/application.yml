@@ -2,7 +2,7 @@
 # 平常测试时使用这个路径，项目根目录，实际部署需要使用绝对路径
 logging:
   file: ./logs/mylog.log
-   # 日志级别logging.level：日志级别控制前缀，*为包名或Logger名 ， LEVEL：选项TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+  # 日志级别logging.level：日志级别控制前缀，*为包名或Logger名 ， LEVEL：选项TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
   level:
     com:
       kanlon:
@@ -12,6 +12,13 @@ spring:
   # 设置quartz使用数据库存储
   quartz:
     job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          jobStore:
+            acquireTriggersWithinLock: true
+          threadPool:
+            threadCount: 30
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_quartz?useUnicode=true&characterEncoding=utf-8&useSSL=false

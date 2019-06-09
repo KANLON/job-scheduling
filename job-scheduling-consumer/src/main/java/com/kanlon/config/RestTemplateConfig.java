@@ -15,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return new RestTemplate(factory);
+    public RestTemplate restTemplate(ClientHttpRequestFactory simpleClientHttpRequestFactory) {
+        return new RestTemplate(simpleClientHttpRequestFactory);
     }
 
     @Bean

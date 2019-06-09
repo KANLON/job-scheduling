@@ -6,4 +6,4 @@ VOLUME /tmp
 ADD spring-boot-grpc-eureka*.jar app.jar
 RUN bash -c 'touch app.jar'
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom --spring.profiles.active=grpc-eureka-1","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom --spring.profiles.active=grpc-eureka-2","-jar","/app.jar"]
