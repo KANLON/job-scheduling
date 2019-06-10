@@ -1,6 +1,5 @@
 import com.kanlon.App;
 import com.kanlon.common.MailUtil;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +20,13 @@ public class HelloTest {
     @Autowired
     private MailUtil mailUtil;
 
+    public void test() {
+        System.out.println("HelloTest");
+    }
+
     /**
      * Rigorous Test :-)
      */
-    @Test
     public void shouldAnswerWithTrue() {
         try {
             mailUtil.sendHtmlMail("s19961234@126.com", "测试的邮件", "测试的内容");

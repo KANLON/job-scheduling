@@ -16,8 +16,23 @@ DROP TABLE IF EXISTS qrtz_triggers;
 DROP TABLE IF EXISTS qrtz_job_details;
 DROP TABLE IF EXISTS qrtz_calendars;
 
+
+
+/**创建服务提供者信息表*/
+DROP TABLE IF EXISTS `tb_provider_service_info`;
+CREATE TABLE `tb_provider_service_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `provider_name` varchar(255) DEFAULT NULL COMMENT '服务提供者在eruka上注册的应用名',
+  `ip_address` varchar(255) DEFAULT NULL COMMENT '服务的ip地址，选填,可以多个',
+  `ctime` timestamp NOT NULL DEFAULT '1991-01-01 00:00:00' COMMENT '创建时间',
+  `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dr` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否有效,标记删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='创建服务提供者信息表';
+
 /*创建自定义的任务表*/
-DROP TABLE IF EXISTS tb_app_quartz;
+
+DROP TABLE IF EXISTS `tb_app_quartz`;
 CREATE TABLE `tb_app_quartz` (
   `quartz_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `job_name` varchar(100) NOT NULL COMMENT '任务名称',
@@ -26,6 +41,7 @@ CREATE TABLE `tb_app_quartz` (
   `cron_expression` varchar(20) NOT NULL COMMENT 'corn表格式',
   `invoke_param` varchar(255) NOT NULL COMMENT '需要传递的参数',
   `invoke_param2` varchar(255) DEFAULT NULL COMMENT '需要传递的参数2',
+  `provider_name` varchar(255) NOT NULL DEFAULT 'localhost' COMMENT '调用的rpc服务提供方',
   `charge` varchar(255) NOT NULL COMMENT '负责人姓名',
   `charge_department` varchar(255) NOT NULL COMMENT '负责人部门',
   `ctime` timestamp NOT NULL DEFAULT '1991-01-01 00:00:00' COMMENT '创建时间',
@@ -33,26 +49,26 @@ CREATE TABLE `tb_app_quartz` (
   `dr` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否有效,标记删除',
   PRIMARY KEY (`quartz_id`),
   UNIQUE KEY `job_name` (`job_name`,`job_group`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='自定义的任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='自定义的任务表';
 
 /**创建任务执行日志结果表*/
-DROP TABLE IF EXISTS tb_quartz_result;
-CREATE TABLE tb_quartz_result
-(
-  id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-  quartz_id INT(11) NOT NULL  COMMENT '任务id',
-  dt CHAR(10) NOT NULL COMMENT '调度日期',
-  start_time DATETIME NOT NULL  COMMENT '调度开始时间',
-  schedule_result TINYINT(1) NOT NULL COMMENT '调度结果。0,表示失败，1表示成功。2表示执行中',
-  exec_result TINYINT(1) NOT NULL COMMENT '执行结果。0,表示失败，1表示成功。2表示执行中',
-  exec_time INT(11) NOT NULL COMMENT '执行时间，毫秒',
-  complete_time DATETIME NOT NULL  COMMENT '调度/执行完成时间',
-  remark VARCHAR(65535) COMMENT '备注',
-  ctime TIMESTAMP NOT NULL DEFAULT NOW() COMMENT '创建时间'
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='任务执行日志结果表';
--- 创建索引
-ALTER TABLE tb_quartz_result ADD INDEX quartz_id_index (quartz_id);
-ALTER TABLE tb_quartz_result ADD INDEX dt_index (dt);
+DROP TABLE IF EXISTS `tb_quartz_result`;
+CREATE TABLE `tb_quartz_result` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `quartz_id` int(11) NOT NULL COMMENT '任务id',
+  `dt` char(10) NOT NULL COMMENT '调度日期',
+  `start_time` datetime NOT NULL COMMENT '调度开始时间',
+  `schedule_result` tinyint(1) NOT NULL COMMENT '调度结果。0,表示失败，1表示成功。2表示执行中',
+  `exec_result` tinyint(1) NOT NULL COMMENT '执行结果。0,表示失败，1表示成功。2表示执行中',
+  `exec_time` int(11) NOT NULL COMMENT '执行时间，毫秒',
+  `complete_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '调度/执行完成时间',
+  `remark` mediumtext COMMENT '备注',
+  `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `quartz_id_index` (`quartz_id`),
+  KEY `dt_index` (`dt`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务执行日志结果表';
+
 
 CREATE TABLE qrtz_job_details
   (
@@ -197,6 +213,9 @@ CREATE TABLE qrtz_locks
     lock_name  VARCHAR(40) NOT NULL,
     PRIMARY KEY (sched_name,lock_name)
 ) DEFAULT CHARSET=utf8  COMMENT='存储程序的非观锁的信息(假如使用了悲观锁)';
+
+
+
 
 
 COMMIT;
