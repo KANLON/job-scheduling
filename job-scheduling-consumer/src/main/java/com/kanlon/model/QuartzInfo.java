@@ -2,7 +2,7 @@ package com.kanlon.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kanlon.common.DateTimeFormat;
+import com.kanlon.format.DateTimeFormat;
 
 import java.util.Date;
 

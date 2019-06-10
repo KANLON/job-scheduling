@@ -1,6 +1,6 @@
 package com.kanlon.controller;
 
-import com.kanlon.common.Constant;
+import com.kanlon.common.ConstantUtils;
 import com.kanlon.model.AppQuartz;
 import com.kanlon.model.CommonResponse;
 import com.kanlon.model.PageDatasModel;
@@ -65,7 +65,7 @@ public class JobController {
         final Date date = new Date();
         appQuartz.setCtime(date);
         appQuartz.setMtime(date);
-        if (Constant.EMAIL_STR.equals(appQuartz.getJobGroup())) {
+        if (ConstantUtils.EMAIL_STR.equals(appQuartz.getJobGroup())) {
             final String flag = "#";
             if (appQuartz.getInvokeParam2() != null) {
                 if (!appQuartz.getInvokeParam2().contains(flag)) {

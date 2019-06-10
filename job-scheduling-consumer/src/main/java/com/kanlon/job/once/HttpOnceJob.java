@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
  **/
 @Component
 public class HttpOnceJob {
+
     private Logger logger = LoggerFactory.getLogger(HttpOnceJob.class);
 
     @Autowired

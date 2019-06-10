@@ -1,5 +1,6 @@
 import com.kanlon.App;
-import com.kanlon.common.MailUtil;
+import com.kanlon.common.MailUtils;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,9 @@ import javax.mail.MessagingException;
 public class HelloTest {
 
     @Autowired
-    private MailUtil mailUtil;
+    private MailUtils mailUtils;
 
+    @Test
     public void test() {
         System.out.println("HelloTest");
     }
@@ -29,7 +31,7 @@ public class HelloTest {
      */
     public void shouldAnswerWithTrue() {
         try {
-            mailUtil.sendHtmlMail("s19961234@126.com", "测试的邮件", "测试的内容");
+            mailUtils.sendHtmlMail("s19961234@126.com", "测试的邮件", "测试的内容");
         } catch (MessagingException e) {
             e.printStackTrace();
         }

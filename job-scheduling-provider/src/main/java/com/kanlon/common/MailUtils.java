@@ -1,7 +1,5 @@
 package com.kanlon.common;
 
-import java.io.File;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 
 /**
  * 邮箱发送工具类
@@ -22,8 +21,9 @@ import javax.mail.internet.MimeMessage;
  * @since 2019年4月22日
  */
 @Component
-public class MailUtil {
-    private static final Logger logger = LoggerFactory.getLogger(MailUtil.class);
+public class MailUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -60,7 +60,7 @@ public class MailUtil {
     public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         // true表示需要创建一个multipart message
-        MimeMessageHelper helper =this.setToAndFromAndSubject(to,subject,content,message);
+        MimeMessageHelper helper = this.setToAndFromAndSubject(to, subject, content, message);
         mailSender.send(message);
         logger.info("html邮件发送成功");
     }
@@ -75,7 +75,7 @@ public class MailUtil {
      */
     public void sendAttachmentsMail(String to, String subject, String content, String filePath) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper =this.setToAndFromAndSubject(to,subject,content,message);
+        MimeMessageHelper helper = this.setToAndFromAndSubject(to, subject, content, message);
         FileSystemResource file = new FileSystemResource(new File(filePath));
         String fileName = filePath.substring(filePath.lastIndexOf(File.separator));
         helper.addAttachment(fileName, file);
@@ -93,7 +93,7 @@ public class MailUtil {
      */
     public void sendInlineResoureceMail(String to, String subject, String content, String rscPath, String rscId) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper =this.setToAndFromAndSubject(to,subject,content,message);
+        MimeMessageHelper helper = this.setToAndFromAndSubject(to, subject, content, message);
         FileSystemResource res = new FileSystemResource(new File(rscPath));
         helper.addInline(rscId, res);
         mailSender.send(message);
@@ -102,10 +102,11 @@ public class MailUtil {
 
     /**
      * 通用的設置 发送人，主题和内容
+     *
      * @param to, subject, content, message]
      * @return org.springframework.mail.javamail.MimeMessageHelper
      **/
-    private MimeMessageHelper setToAndFromAndSubject(String to, String subject, String content,MimeMessage message) throws MessagingException {
+    private MimeMessageHelper setToAndFromAndSubject(String to, String subject, String content, MimeMessage message) throws MessagingException {
         // true表示需要创建一个multipart message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(from);

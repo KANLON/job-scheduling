@@ -6,7 +6,7 @@ package com.kanlon.common;
  * @author zhangcanlong
  * @since 2019/4/15 14:58
  **/
-public class Constant {
+public class ConstantUtils {
     /**表示http协议的任务*/
     public final static String HTTP_STR="http";
     /**表示执行shell的任务*/

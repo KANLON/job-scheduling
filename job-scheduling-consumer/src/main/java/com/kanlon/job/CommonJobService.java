@@ -1,6 +1,6 @@
 package com.kanlon.job;
 
-import com.kanlon.common.DateTimeFormat;
+import com.kanlon.format.DateTimeFormat;
 import com.kanlon.model.QuartzResultModel;
 import com.kanlon.service.QuartzResultService;
 import org.slf4j.Logger;

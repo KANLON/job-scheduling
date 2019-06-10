@@ -1,6 +1,6 @@
 package com.kanlon.service;
 
-import com.kanlon.common.Constant;
+import com.kanlon.common.ConstantUtils;
 import com.kanlon.exception.QuartzException;
 import com.kanlon.job.RpcJob;
 import com.kanlon.model.AppQuartz;
@@ -47,10 +47,10 @@ public class JobService {
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(appQuartz.getJobName(),
                 appQuartz.getJobGroup()).startAt(appQuartz.getStartTime()).withSchedule(scheduleBuilder).withDescription(appQuartz.getDescription()).build();
         //传递参数
-        trigger.getJobDataMap().put(Constant.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
-        trigger.getJobDataMap().put(Constant.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
-        trigger.getJobDataMap().put(Constant.PROVIDER_NAME_STR, appQuartz.getProviderName());
-        trigger.getJobDataMap().put(Constant.QUARTZ_ID_STR, appQuartz.getQuartzId());
+        trigger.getJobDataMap().put(ConstantUtils.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
+        trigger.getJobDataMap().put(ConstantUtils.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
+        trigger.getJobDataMap().put(ConstantUtils.PROVIDER_NAME_STR, appQuartz.getProviderName());
+        trigger.getJobDataMap().put(ConstantUtils.QUARTZ_ID_STR, appQuartz.getQuartzId());
         //将触发器与任务绑定在一起
         scheduler.scheduleJob(jobDetail, trigger);
         logger.info("插入内置quartz成功");
@@ -79,10 +79,10 @@ public class JobService {
         trigger =
                 trigger.getTriggerBuilder().startAt(appQuartz.getStartTime()).withIdentity(triggerKey).withDescription(appQuartz.getDescription()).withSchedule(scheduleBuilder).build();
         //修改参数
-        trigger.getJobDataMap().put(Constant.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
-        trigger.getJobDataMap().put(Constant.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
-        trigger.getJobDataMap().put(Constant.PROVIDER_NAME_STR, appQuartz.getProviderName());
-        trigger.getJobDataMap().put(Constant.QUARTZ_ID_STR, appQuartz.getQuartzId());
+        trigger.getJobDataMap().put(ConstantUtils.INVOKE_PARAM_STR, appQuartz.getInvokeParam());
+        trigger.getJobDataMap().put(ConstantUtils.INVOKE_PARAM2_STR, appQuartz.getInvokeParam2());
+        trigger.getJobDataMap().put(ConstantUtils.PROVIDER_NAME_STR, appQuartz.getProviderName());
+        trigger.getJobDataMap().put(ConstantUtils.QUARTZ_ID_STR, appQuartz.getQuartzId());
         //按新的trigger重新设置job执行
         scheduler.rescheduleJob(triggerKey, trigger);
         logger.info("修改内置quartz信息成功");

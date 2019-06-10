@@ -8,15 +8,16 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * RestTemplate配置
+ *
  * @author zhangcanlong
  * @since 2019-04-15 17:01
  */
 @Configuration
-public class RestTemplateConfig {
+public class RestTemplateConfigurer {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return new RestTemplate(factory);
+    public RestTemplate restTemplate(ClientHttpRequestFactory simpleClientHttpRequestFactory) {
+        return new RestTemplate(simpleClientHttpRequestFactory);
     }
 
     @Bean

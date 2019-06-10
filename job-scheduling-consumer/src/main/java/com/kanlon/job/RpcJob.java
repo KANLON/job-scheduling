@@ -1,6 +1,6 @@
 package com.kanlon.job;
 
-import com.kanlon.common.Constant;
+import com.kanlon.common.ConstantUtils;
 import com.kanlon.job.once.EmailOnceJob;
 import com.kanlon.job.once.HttpOnceJob;
 import com.kanlon.job.once.ShellOnceJob;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RpcJob extends QuartzJobBean {
 
-    Logger logger = LoggerFactory.getLogger(QuartzJobBean.class);
+    Logger logger = LoggerFactory.getLogger(RpcJob.class);
 
 
     @Autowired
@@ -50,20 +50,20 @@ public class RpcJob extends QuartzJobBean {
             logger.info("执行的任务名为：" + context.getTrigger().getKey());
             // 包含传递参数信息的map
             JobDataMap data = context.getTrigger().getJobDataMap();
-            model.setQuartzId((Long) data.get(Constant.QUARTZ_ID_STR));
-            String param1 = (String) data.get(Constant.INVOKE_PARAM_STR);
-            String param2 = (String) data.get(Constant.INVOKE_PARAM2_STR);
-            String providerName = (String) data.get(Constant.PROVIDER_NAME_STR);
+            model.setQuartzId((Long) data.get(ConstantUtils.QUARTZ_ID_STR));
+            String param1 = (String) data.get(ConstantUtils.INVOKE_PARAM_STR);
+            String param2 = (String) data.get(ConstantUtils.INVOKE_PARAM2_STR);
+            String providerName = (String) data.get(ConstantUtils.PROVIDER_NAME_STR);
             // 调度的类型，http，shell，还是email，由组名决定
             String type = context.getJobDetail().getKey().getGroup();
             CommonResponse commonResponse;
             // 如果是localhost执行本地的调度方法
-            if (Constant.LOCALHOST_STR.equals(providerName)) {
-                if (Constant.SHELL_STR.equals(type)) {
+            if (ConstantUtils.LOCALHOST_STR.equals(providerName)) {
+                if (ConstantUtils.SHELL_STR.equals(type)) {
                     commonResponse = shellOnceJob.executeInternal(param1);
-                } else if (Constant.HTTP_STR.equals(type)) {
+                } else if (ConstantUtils.HTTP_STR.equals(type)) {
                     commonResponse = httpOnceJob.executeInternal(param1);
-                } else if (Constant.EMAIL_STR.equals(type)) {
+                } else if (ConstantUtils.EMAIL_STR.equals(type)) {
                     commonResponse = emailOnceJob.executeInternal(param1, param2);
                 } else {
                     commonResponse = CommonResponse.failedResult("执行任务的类型错误");
@@ -88,7 +88,7 @@ public class RpcJob extends QuartzJobBean {
             }
         } catch (Exception e) {
             logger.error("调度任务错误！", e);
-            resultLog.append("调度任务错误！" + e.getLocalizedMessage());
+            resultLog.append("调度任务错误！").append(e.getLocalizedMessage());
         } finally {
             commonJobService.addResult(oldTime, resultLog.toString(), model, logger);
         }

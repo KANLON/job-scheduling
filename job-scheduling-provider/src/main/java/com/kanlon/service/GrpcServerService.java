@@ -1,7 +1,7 @@
 package com.kanlon.service;
 
 
-import com.kanlon.common.Constant;
+import com.kanlon.common.ConstantUtils;
 import com.kanlon.job.EmailOnceJob;
 import com.kanlon.job.HttpOnceJob;
 import com.kanlon.job.ShellOnceJob;
@@ -44,11 +44,11 @@ public class GrpcServerService extends GreeterGrpc.GreeterImplBase {
         GreeterOuterClass.CommonResponseReply.Builder builder = GreeterOuterClass.CommonResponseReply.newBuilder();
         //邮件任务
         CommonResponse commonResponse;
-        if (Constant.EMAIL_STR.equals(type)) {
+        if (ConstantUtils.EMAIL_STR.equals(type)) {
             commonResponse = emailOnceJob.executeInternal(param1, param2);
-        } else if (Constant.HTTP_STR.equals(type)) {
+        } else if (ConstantUtils.HTTP_STR.equals(type)) {
             commonResponse = httpOnceJob.executeInternal(param1);
-        } else if (Constant.SHELL_STR.equals(type)) {
+        } else if (ConstantUtils.SHELL_STR.equals(type)) {
             commonResponse = shellOnceJob.executeInternal(param1);
         } else {
             commonResponse = CommonResponse.failedResult("发送的执行任务类型有误！");

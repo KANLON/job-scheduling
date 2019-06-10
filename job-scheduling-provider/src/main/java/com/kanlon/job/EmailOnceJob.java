@@ -1,6 +1,6 @@
 package com.kanlon.job;
 
-import com.kanlon.common.MailUtil;
+import com.kanlon.common.MailUtils;
 import com.kanlon.model.CommonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class EmailOnceJob {
     Logger logger = LoggerFactory.getLogger(EmailOnceJob.class);
 
     @Autowired
-    private MailUtil mailUtil;
+    private MailUtils mailUtils;
 
     /**
      * 执行发送邮箱任务
@@ -38,7 +38,7 @@ public class EmailOnceJob {
             //以#为分割，第一个#之前的内容为subject,即标题
             String subject = invokeParam2[0];
             String content = invokeParam2[1];
-            mailUtil.sendHtmlMail(to, subject, content);
+            mailUtils.sendHtmlMail(to, subject, content);
         } catch (Exception e) {
             logger.error("定时发送邮件错误！", e);
             return CommonResponse.failedResult(e.getLocalizedMessage());

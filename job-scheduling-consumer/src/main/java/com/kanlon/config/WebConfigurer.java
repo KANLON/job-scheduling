@@ -1,6 +1,6 @@
 package com.kanlon.config;
 
-import com.kanlon.common.DateTimeFormat;
+import com.kanlon.format.DateTimeFormat;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -22,8 +22,8 @@ import javax.mail.internet.MimeMessage;
  * @since 2019年4月22日
  */
 @Component
-public class MailUtil {
-    private static final Logger logger = LoggerFactory.getLogger(MailUtil.class);
+public class MailUtils {
+    private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
 
     @Autowired
     private JavaMailSender mailSender;

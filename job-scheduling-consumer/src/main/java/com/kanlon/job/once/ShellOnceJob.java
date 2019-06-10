@@ -1,14 +1,12 @@
 package com.kanlon.job.once;
 
-import com.kanlon.common.Constant;
+import com.kanlon.job.AsyncJobService;
 import com.kanlon.model.CommonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +20,9 @@ import java.util.concurrent.TimeUnit;
 public class ShellOnceJob {
 
     private Logger logger = LoggerFactory.getLogger(ShellOnceJob.class);
+
+    @Autowired
+    private AsyncJobService asyncJobService;
 
     /**
      * 执行shell任务
@@ -37,7 +38,7 @@ public class ShellOnceJob {
         StringBuffer resultLog = new StringBuffer();
         Integer exitValue;
         try {
-            runShell(param1, resultLog, latch, tempInteger);
+            asyncJobService.runShell(param1, resultLog, latch, tempInteger);
             //如果过了3个小时后，还没执行完，则直接返回
             latch.await(3, TimeUnit.HOURS);
             exitValue = tempInteger[0];
@@ -57,30 +58,5 @@ public class ShellOnceJob {
         return CommonResponse.succeedResult();
     }
 
-    /**
-     * 运行命令
-     *
-     * @param shStr 命令
-     * @return 运行结果
-     **/
-    @Async
-    protected Integer[] runShell(String shStr, StringBuffer result, CountDownLatch latch, Integer[] results) throws Exception {
-        String os = System.getProperty("os.name").toLowerCase();
-        Process process;
-        if (os.startsWith(Constant.OS_NAME)) {
-            process = Runtime.getRuntime().exec("cmd /c " + shStr);
-        } else {
-            process = Runtime.getRuntime().exec(new String[]{"/bin/sh", "-c", shStr});
-        }
-        process.waitFor();
-        BufferedReader read = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        while ((line = read.readLine()) != null) {
-            result.append(line);
-        }
-        results[0] = process.exitValue();
-        latch.countDown();
-        return results;
-    }
 
 }

@@ -10,6 +10,12 @@
 3. `job-scheduling-provider` 是grpc的提供方，提供方法，不涉及调度任务，由消费方定时调度。
 4. `spring-boot-grpc-eureka` 服务注册中心，提供服务注册，方便grpc通过应用名即可调用远程rpc方法。
 
+
+#### 2019-06-10 
+0. 将远程的docker服务器，转化为本地window的docker，可以使用docker desktop安装模拟docker
+1. 完善类名和修改异步调用的bug 
+2. 简化pom文件，删除多余的依赖
+
 #### 2019-05-4
 0. 将项目从练习中独立出来，形成单独的项目
 1. 预期能使用gRPC或者eureka注册中心配合能进行远程调用

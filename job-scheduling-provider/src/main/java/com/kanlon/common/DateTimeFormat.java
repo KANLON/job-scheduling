@@ -21,7 +21,7 @@ public class DateTimeFormat implements Formatter<Date> {
     @Override
     public Date parse(String s, Locale locale) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DateTimeFormat.NORMAL_PATTERN);
-        sdf.setTimeZone(TimeZone.getTimeZone(Constant.TIMEZONE_STR));
+        sdf.setTimeZone(TimeZone.getTimeZone(ConstantUtils.TIMEZONE_STR));
         Date ret = sdf.parse(s);
         return ret;
     }
@@ -29,7 +29,7 @@ public class DateTimeFormat implements Formatter<Date> {
     @Override
     public String print(Date date, Locale locale) {
         SimpleDateFormat sdf = new SimpleDateFormat(DateTimeFormat.NORMAL_PATTERN);
-        sdf.setTimeZone(TimeZone.getTimeZone(Constant.TIMEZONE_STR));
+        sdf.setTimeZone(TimeZone.getTimeZone(ConstantUtils.TIMEZONE_STR));
         String ret = sdf.format(date);
         return ret;
     }
@@ -58,7 +58,7 @@ public class DateTimeFormat implements Formatter<Date> {
      **/
     public static Date parseLocal(String s) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DateTimeFormat.DATE_FORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone(Constant.TIMEZONE_STR));
+        sdf.setTimeZone(TimeZone.getTimeZone(ConstantUtils.TIMEZONE_STR));
         Date ret = sdf.parse(s);
         return ret;
     }
@@ -70,7 +70,7 @@ public class DateTimeFormat implements Formatter<Date> {
      **/
     public static String printLocal(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(DateTimeFormat.DATE_FORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone(Constant.TIMEZONE_STR));
+        sdf.setTimeZone(TimeZone.getTimeZone(ConstantUtils.TIMEZONE_STR));
         String ret = sdf.format(date);
         return ret;
     }
