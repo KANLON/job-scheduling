@@ -1,6 +1,6 @@
 package com.kanlon.service;
 
-import com.kanlon.model.CommonResponse;
+import com.kanlon.response.CommonResponse;
 import com.kanlon.model.ConsumerRequest;
 import com.kanlon.proto.GreeterGrpc;
 import com.kanlon.proto.GreeterOuterClass;

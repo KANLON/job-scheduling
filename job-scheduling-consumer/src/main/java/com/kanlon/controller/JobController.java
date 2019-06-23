@@ -2,7 +2,7 @@ package com.kanlon.controller;
 
 import com.kanlon.common.ConstantUtils;
 import com.kanlon.model.AppQuartz;
-import com.kanlon.model.CommonResponse;
+import com.kanlon.response.CommonResponse;
 import com.kanlon.model.PageDatasModel;
 import com.kanlon.model.PageModel;
 import com.kanlon.service.AppQuartzService;

@@ -4,8 +4,8 @@ import com.kanlon.common.ConstantUtils;
 import com.kanlon.exception.QuartzException;
 import com.kanlon.job.RpcJob;
 import com.kanlon.model.AppQuartz;
-import com.kanlon.model.CommonResponse;
 import com.kanlon.model.ScheduleJob;
+import com.kanlon.response.CommonResponse;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
@@ -16,9 +16,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
- * 任务的service 工具类
+ * 实际quart任务，创建的service 工具类
  *
  * @author zhangcanlong
  * @since 2019-04-10
@@ -42,7 +43,7 @@ public class JobService {
                 appQuartz.getJobGroup()).build();
         //表达式调度构建器(即任务执行的时间,不立即执行)
         CronScheduleBuilder scheduleBuilder =
-                CronScheduleBuilder.cronSchedule(appQuartz.getCronExpression()).withMisfireHandlingInstructionDoNothing();
+                CronScheduleBuilder.cronSchedule(appQuartz.getCronExpression()).withMisfireHandlingInstructionDoNothing().inTimeZone(TimeZone.getTimeZone("GMT+8"));
         //构建trigger
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(appQuartz.getJobName(),
                 appQuartz.getJobGroup()).startAt(appQuartz.getStartTime()).withSchedule(scheduleBuilder).withDescription(appQuartz.getDescription()).build();
@@ -74,7 +75,7 @@ public class JobService {
         CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
         //表达式调度构建器,不立即执行
         CronScheduleBuilder scheduleBuilder =
-                CronScheduleBuilder.cronSchedule(appQuartz.getCronExpression()).withMisfireHandlingInstructionDoNothing();
+                CronScheduleBuilder.cronSchedule(appQuartz.getCronExpression()).withMisfireHandlingInstructionDoNothing().inTimeZone(TimeZone.getTimeZone("GMT+8"));
         //按新的cronExpression表达式重新构建trigger
         trigger =
                 trigger.getTriggerBuilder().startAt(appQuartz.getStartTime()).withIdentity(triggerKey).withDescription(appQuartz.getDescription()).withSchedule(scheduleBuilder).build();

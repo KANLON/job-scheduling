@@ -1,4 +1,4 @@
-package com.kanlon.model;
+package com.kanlon.response;
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package com.kanlon.controller;
 
-import com.kanlon.model.CommonResponse;
+import com.kanlon.response.CommonResponse;
 import com.kanlon.model.ConsumerRequest;
 import com.kanlon.service.GrpcConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;

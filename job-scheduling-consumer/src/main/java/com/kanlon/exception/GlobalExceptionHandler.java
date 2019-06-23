@@ -1,7 +1,7 @@
 package com.kanlon.exception;
 
 
-import com.kanlon.model.CommonResponse;
+import com.kanlon.response.CommonResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.FieldError;

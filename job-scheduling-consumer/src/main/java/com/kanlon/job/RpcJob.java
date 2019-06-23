@@ -4,7 +4,7 @@ import com.kanlon.common.ConstantUtils;
 import com.kanlon.job.once.EmailOnceJob;
 import com.kanlon.job.once.HttpOnceJob;
 import com.kanlon.job.once.ShellOnceJob;
-import com.kanlon.model.CommonResponse;
+import com.kanlon.response.CommonResponse;
 import com.kanlon.model.ConsumerRequest;
 import com.kanlon.model.QuartzResultModel;
 import com.kanlon.service.GrpcConsumerService;
